@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  flask-app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app.db:/app/app.db  # Bind-mount the SQLite database to persist data
+    environment:
+      - FLASK_ENV=development
+    restart: unless-stopped
+
+volumes:
+  db-data:
