@@ -13,8 +13,9 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
 
-# Create the database
-db.create_all()
+# Create the database and tables within the application context
+with app.app_context():
+    db.create_all()
 
 # Create (POST) a new item
 @app.route('/item', methods=['POST'])
@@ -54,4 +55,4 @@ def delete_item(id):
     return jsonify({'message': 'Item not found'}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
