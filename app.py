@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -58,6 +58,12 @@ def delete_item(id):
 @app.route('/')
 def welcome():
     return jsonify({"message": "Welcome to the Items API!"})
+
+# Route to render HTML page showing all items
+@app.route('/display-items')
+def display_items():
+    items = Item.query.all()  # Query all items
+    return render_template('items.html', items=items)  # Render HTML template with items
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')  # Allow access from outside
