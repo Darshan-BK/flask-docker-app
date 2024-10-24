@@ -13,8 +13,8 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
 
-# Create the database and tables within the application context
-with app.app_context():
+# Create the database
+with app.app_context():  # Use application context when creating the database
     db.create_all()
 
 # Create (POST) a new item
@@ -54,10 +54,10 @@ def delete_item(id):
         return jsonify({'message': 'Item deleted successfully!'})
     return jsonify({'message': 'Item not found'}), 404
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
-
-
+# Default route
 @app.route('/')
-def index():
-    return jsonify({'message': 'Welcome to the Items API!'})
+def welcome():
+    return jsonify({"message": "Welcome to the Items API!"})
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')  # Allow access from outside
