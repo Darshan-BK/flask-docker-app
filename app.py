@@ -1,10 +1,11 @@
+import os
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# Configure SQLite database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/items.db'
+# Set the path for the SQLite database
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(app.instance_path, 'items.db')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -12,6 +13,10 @@ db = SQLAlchemy(app)
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
+
+# Create the instance directory if it doesn't exist
+if not os.path.exists(app.instance_path):
+    os.makedirs(app.instance_path)
 
 # Create the database
 with app.app_context():  # Use application context when creating the database
